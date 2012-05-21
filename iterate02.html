@@ -1,0 +1,74 @@
+<!Doctype html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>第2回アクティ部Ruby勉強会</title>
+    <link href="style/contents.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <section>
+      <header>
+        <h1>第2回 Actibu Ruby勉強会</h1>
+        2012/05/18 講師：<a href="https://github.com/akiinyo">akiinyo</a><br>
+        参考文献：<a href="http://www.amazon.co.jp/First-Rails-%E2%80%95%E9%A0%AD%E3%81%A8%E3%81%8B%E3%82%89%E3%81%A0%E3%81%A7%E8%A6%9A%E3%81%88%E3%82%8BRails%E3%81%AE%E5%9F%BA%E6%9C%AC-David-Griffiths/dp/4873114381">Head First Rails</a> 第1章<br>
+        書記：<a href="https://github.com/shimosuk">shimosuk</a>
+      </header>
+
+      <section>
+        <h2>モデル</h2>
+        <p>下図は<span>app/models/ticket.rb</span>のscaffold既存のコードに新たに制約を加えたものである。<br>
+        <img src="image/app/models/ticket.png" /></p>
+        <p>モデルには、データベースとの連携を行うためのクラスが格納されている。<br>
+        コード中<span>attr_accessible</span>は、コントローラから呼び出された際にどのようなカラムを持ってデータを取得するかを示したものである。</p>
+        <p>もし、データベースに登録する際に制約(validation)をかける場合は別途定義する必要があり、<br>
+        例えば、<span>validates :name, presence: true</span>は編集、登録の際に、入力を必須にするような制約をかけるものである。<br>
+        ただし、<span>attr_accessible</span>は<span>rails 3.0.0</span>では表示されないので注意が必要。</p>
+        <p><img src="image/name-validation.png" /><br>
+        図は、入力必須の制約をかけたnameに値を入力しないで入力した場合の表示。<br>
+        バリデーション設定前までは無かった画面。</p>
+      </section>
+
+      <section>
+        <h2>コントローラ</h2>
+        <p>コントローラは、アプリケーションがどのように動くかを定める部分。<br>
+        例えば、モデルからのデータをどのビューで表示するかを決める。</p>
+        <p>下図は、<span>app/controllers/tickets_controller.rb</span>のindexメソッドに着目したもの。<br>
+        <img src="image/app/controllers/tickets_controller.png" /></p>
+        <p>indexメソッドは、アクションメソッドと呼ばれ、ビューの中で対応したHTMLファイルとの連携が可能である。<br>
+        今回着目したindexメソッドの場合は、それがビューの<span>app/views/tickets/index.html.erb</span>にあたる。<br>
+        コントローラがビューやモデルとどのような関係を持っているかはビューの解説後。</p>
+      </section>
+
+      <section>
+        <h2>ビュー</h2>
+        <p>アプリケーションに触れた際に実際に見える部分。<br>
+        ボタンの配置や見え方などの表示に関わる。<br>
+        コードは<span>app/views/tickets/index.html.erb</span>のもの。</p>
+        <p><img src="image/app/views/tickets-index.png" /><br>
+        図は<span>http://localhost:3000/tickets</span>でアクセスした際に表示される画面のコードにあたり、<br>
+        そのurlの規則は<span>config/routes.rb</span>で定められる。（詳細は後述）</p>
+        <p>コード中の<span>&lt;%=</span>と<span>%&gt;</span>で囲まれている部分はRubyで書かれている。<br>
+        また、<span>&lt;% @tickets.each do |ticket| &gt;</span>の<span>@tickets</span>はコントローラで設定した値である。</p>
+      </section>
+
+      <section>
+        <h2>コントローラとのしごと</h2>
+        <p>コントローラで使用した図の5行目<span>@tickets = Ticket.all</span>を見てみる。<br>
+        左辺<span>@tickets</span>は、ビューからの参照が可能になっており、実際にビューの15行目のような形で参照され、17行目から24行目のような形で表示に使用されてる。<br>
+        右辺<span>Ticket.all</span>は、モデルのticketクラスに、どのようなデータを取得するかを指示している。</p>
+        <p>allというのはモデルのticketクラスが継承している<span>activerecord::base</span>のメソッド(推測につき確認が必要)で<span>SELECT * FROM tickets</span>を発行する。<br>
+        他にも詳細画面show.html.erbのアクションメソッドshowでは<span>find</span>が、新規追加画面のアクションメソッドnewでは<span>new</span>が使用されている。<br>
+        どんなSQLが発行されているのかはプロンプト上に<span>rails c</span>と入力し専用のコンソールを立ち上げることで、モデルがデータベースに送るリクエストを確認できる。(終了する場合は exit)<br>
+        また、発行されたSQL文から比較的見やすい表示でデータを見たい場合は<span>rails dbconsole</span>でデータベースを参照することも可能である。(終了は .q)</p>
+      </section>
+
+      <section>
+        <h2>URL設計</h2>
+        <p>画面毎にどのような規則でURLが割り当てられるかを学ぶ。<br>
+        <span>config/routes.rb</span>を見る。<br>
+        <img src="image/config/routes.png" /></p>
+      </section>
+    </section>
+  </body>
+</html>
