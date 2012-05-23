@@ -1,0 +1,10 @@
+Actiblogとは
+
+actibuという小集団チームが5/12から開始したHead First Railsを使った勉強会の記録をHTML形式で記録しているものです。
+今後、学んだRuby on Railsを使ってblogのようなアプリケーションを作成し公開ができるようにすることを目指します。
+
+バージョン
+
+Rails 3.2.3
+Ruby 1.9.3
+Rake 0.9.2.2
