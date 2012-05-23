@@ -75,6 +75,9 @@
         Scaffoldでアプリを生成すると、このように記述される。<br>
         <span>rake routes</span>コマンドを叩くと、定義されているルートを確認することができる。<br>
         <span>resources</span>でルート定義されるメソッドは、index, show, new, create, edit, update, destroy の7つ。</p>
+        <p>新たに画面を作成した場合など、自身でURLを設定することができる。</br>
+        例えば、<span>localhost:3000/</span>のようなアプリケーションのルートに アクションメソッドindex を割り当てる場合は、 <span>root to: 'ticket#index'</span>と記述する。</br>
+        また、<span>localhost:3000/show</span>に アクションメソッドshow を割り当てる場合は、<span>match '/show' , to : 'ticket#show'</span>と記述する。</p>
       </section>
     </section>
   </body>
