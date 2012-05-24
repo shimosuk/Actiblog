@@ -73,8 +73,8 @@
         <p><span>config/routes.rb</span>を見る。<br>
         <img src="image/config/routes.png" /><br>
         Scaffoldでアプリを生成すると、このように記述される。<br>
-        <span>rake routes</span>コマンドを叩くと、定義されているルートを確認することができる。<br>
-        <span>resources</span>でルート定義されるメソッドは、index, show, new, create, edit, update, destroy の7つ。</p>
+        <span>rake routes</span>コマンドを叩くと、定義されている現状のURLにどのようなページが割り当てられているかを確認することができる。<br>
+        <span>resources</span>で定義されるメソッドは、index(一覧), show(詳細), new(新規), create(作成), edit(編集), update(更新), destroy(削除) の7つ。</p>
         <p>新たに画面を作成した場合など、自身でURLを設定することができる。</br>
         例えば、<span>localhost:3000/</span>のようなアプリケーションのルートに アクションメソッドindex を割り当てる場合は、 <span>root to: 'ticket#index'</span>と記述する。</br>
         また、<span>localhost:3000/show</span>に アクションメソッドshow を割り当てる場合は、<span>match '/show' , to : 'ticket#show'</span>と記述する。</p>
