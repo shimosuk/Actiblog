@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>第2回アクティ部Ruby勉強会</title>
-    <link href="style/contents.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/stylesheets/contents.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
@@ -18,14 +18,14 @@
       <section>
         <h2>モデル</h2>
         <p>下図は<span>app/models/ticket.rb</span>のscaffold既存のコードに新たに制約を加えたものである。<br>
-        <img src="image/app/models/ticket.png" /></p>
+        <img src="../../assets/images/app/models/ticket.png" /></p>
         <p>モデルには、データベースとの連携を行うためのクラスが格納されている。<br>
         コード中<span>attr_accessible</span>は、代入を許可するカラムを指定するもの。反対は<span>attr_protected</span>で、代入を制限するカラムを指定する。<br>
         (制限するのはカラムを一括して扱うメソッドに対してだけで、カラムに対応するメソッドを使って代入することは可能。)</p>
         <p>もし、データベースに登録する際に制約(validation)をかける場合は別途定義する必要があり、<br>
         例えば、<span>validates :name, presence: true</span>は編集、登録の際に、入力を必須にするような制約をかけるものである。<br>
         ただし、<span>attr_accessible</span>は<span>rails 3.0.0</span>では自動生成されないので注意が必要。</p>
-        <p><img src="image/name-validation.png" /><br>
+        <p><img src="../../assets/images/name-validation.png" /><br>
         図は、入力必須の制約をかけたnameに値を入力しないで入力した場合の表示。<br>
         バリデーション設定前までは無かった画面。</p>
       </section>
@@ -35,7 +35,7 @@
         <p>コントローラは、アプリケーションがどのように動くかを定める部分。<br>
         例えば、モデルからのデータをどのビューで表示するかを決める。</p>
         <p>下図は、<span>app/controllers/tickets_controller.rb</span>のindexメソッドに着目したもの。<br>
-        <img src="image/app/controllers/tickets_controller.png" /></p>
+        <img src="../../assets/images/app/controllers/tickets_controller.png" /></p>
         <p>コントローラーのメソッドは、アクションメソッドと呼ばれ、ビューの中で対応したHTMLファイルとの連携が可能である。<br>
         今回着目したindexメソッドの場合は、それがビューの<span>app/views/tickets/index.html.erb</span>にあたる。</p>
         <p>respond_toメソッドは、指定されたフォーマットに応じて異なるテンプレートを呼び出すためのしくみ。<br>
@@ -49,7 +49,7 @@
         <p>アプリケーションに触れた際に実際に見える部分。<br>
         ボタンの配置や見え方などの表示に関わる。<br>
         コードは<span>app/views/tickets/index.html.erb</span>のもの。</p>
-        <p><img src="image/app/views/tickets-index.png" /><br>
+        <p><img src="../../assets/images/app/views/tickets-index.png" /><br>
         図は<span>http://localhost:3000/tickets</span>でアクセスした際に表示される画面のコードにあたり、<br>
         そのurlの規則は<span>config/routes.rb</span>で定められる。（詳細は後述）</p>
         <p>コード中の<span>&lt;%=</span>と<span>%&gt;</span>で囲まれている部分はRubyで書かれている。<br>
@@ -71,7 +71,7 @@
         <h2>URL設計</h2>
         <p>画面毎にどのような規則でURLが割り当てられるかを学ぶ。</p>
         <p><span>config/routes.rb</span>を見る。<br>
-        <img src="image/config/routes.png" /><br>
+        <img src="../../assets/images/config/routes.png" /><br>
         Scaffoldでアプリを生成すると、このように記述される。<br>
         <span>rake routes</span>コマンドを叩くと、定義されているルートを確認することができる。<br>
         <span>resources</span>でルート定義されるメソッドは、index, show, new, create, edit, update, destroy の7つ。</p>
