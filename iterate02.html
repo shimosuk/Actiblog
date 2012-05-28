@@ -76,8 +76,8 @@
         <span>rake routes</span>コマンドを叩くと、定義されている現状のURLにどのようなページが割り当てられているかを確認することができる。<br>
         <span>resources</span>で定義されるメソッドは、index(一覧), show(詳細), new(新規), create(作成), edit(編集), update(更新), destroy(削除) の7つ。</p>
         <p>新たに画面を作成した場合など、自身でURLを設定することができる。</br>
-        例えば、<span>localhost:3000/</span>のようなアプリケーションのルートに アクションメソッドindex を割り当てる場合は、 <span>root to: 'ticket#index'</span>と記述する。</br>
-        また、<span>localhost:3000/show</span>に アクションメソッドshow を割り当てる場合は、<span>match '/show' , to : 'ticket#show'</span>と記述する。</p>
+        例えば、<span>localhost:3000/</span>のようなアプリケーションのルートに ticketクラスのアクションメソッドindex を割り当てる場合は、 <span>root to: 'ticket#index'</span>と記述する。</br>
+        また、<span>localhost:3000/signin</span>に sessionsクラスのアクションメソッドnew を割り当てる場合は、<span>match '/signin' , to : 'sessions#new'</span>と記述する。</p>
       </section>
     </section>
   </body>
