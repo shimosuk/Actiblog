@@ -17,10 +17,69 @@
 
       <section>
         <h2>お知らせページの追加</h2>
+コントローラの追加
+infomations_controller.rbを作る
+<div class="code">
+class InformationsController < ApplicationController
+</div>
+を記述
+
+app/views/informations/index.html.erb 
+<div class="code">
+view/infomations/index.html.erb
+</div>
+
+<div class="code">
+&lth1>informations&lt/h1>
+</div>
+
+ルーティングの設定
+config/routes.rb</br>
+
+下記の3つどれか matchを使うならindexメソッドを書いたほうがいいかも</br>
+resources :informations</br>
+resources :informations, only: :index</br>
+match '/informations', to: 'informations#index'</br>
+
+<p>raik routes</p>
+で現在のルーティングが一覧できる
+
+urlを叩いてinformations画面の確認
+
+index.html.erbにinfomationsリンクを作成
+
+<p><%= link_to 'Informations', informations_path %></p>
+を追加
       </section>
 
       <section>
         <h2>テスト作成</h2>
+RSpecをつかう</br>
+
+GemFileに</br>
+group :test do</br>
+gem 'rspec-rails'</br>
+end</br>
+
+を記述</br>
+
+bundle install</br>
+(bundleだけでもいい)</br>
+
+rails generate rspec:install</br>
+
+を実行</br>
+RSpecの初期化</br>
+
+bundle exec rake db:migrate RAILS_ENV=test</br>
+テスト用のDB作成</br>
+bundle 以下のもののみを評価するようにするgemすべてのコマンドを使用しない</br>
+
+モデルのテストを書く</br>
+
+既存のテストを書く</br>
+バリデーションのテストを書いた</br>
+
       </section>
 
       <section>
