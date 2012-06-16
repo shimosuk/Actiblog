@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>第5回ActibuRuby勉強会</title>
+    <link href="style/contents.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <section>
+      <header>
+        <h1>第5回 Actibu Ruby勉強会</h1>
+        2012/06/16 講師：<a href="https://github.com/akiinyo">akiinyo</a><br>
+        書記：<a href="https://github.com/shimosuk">shimosuk</a>
+      </header>
+
+      <section>
+        <h2>ticketテーブルにカラムを追加</h2>
+        <p>電話番号のというカラムを追加する</br>
+        まずはテストにこれから追加する電話番号を定義</p>
+        <div class="code">
+        <p class="file">spec/models/ticket_spec.rb</p>
+          <pre>
+<code>
+#coding: utf-8
+require 'spec_helper'
+
+describe Ticket do
+
+  describe 'validation' do
+    before do
+      @ticket = Ticket.new(name: 'akiinyo', seat_id_seq: 'A-7', address: 'Tokyo', price_paid: '3000', email_address: 'akiinyo@example.com', <span>phone_number: '1234567890'</span>)
+    end
+
+    subject { @ticket }
+
+    context '名前が未入力の場合' do
+      before { @ticket.name = '' }
+      it { should_not be_valid }
+    end
+
+    context '名前を入力した場合' do
+      before { @ticket.name = 'akiinyo' }
+      it { should be_valid }
+    end
+  end
+end
+</code>
+          </pre>
+        </div>
+        <p>
+        ここで<span>bundle exec rspec spec</span>でテストを実行</br>
+        エラーメッセージに注目。今後変更を加えていく中で逐一テストを実行してエラーの移り変わりを楽しんで下さい
+        </p>
+        <p>
+        続いて<span>rails g migration AddPhoneNumberToTickets phone_name:string</span>を実行</br>
+        AddPhoneNumberToTicketsは<span>db/migrate/</span>に作成されるマイグレーション名</br>
+        Addカラム名Toモデル名が基本。異なる名称で実行した場合は、今回であれば<span>add_column :tickets, :phone_number, :String</span>を手で追加する必要がある</br>
+        </p>
+        <p>
+        <span>bundle exec rake db:migrate</span>でデータベースを更新</br>
+        <span>bundle exec rake db:migrate RAILS_ENV=test</span>でテストDBを更新</br>
+        <span>bundle exec rspec spec</span>でテストを実行</br>
+        </p>
+      </section>
+  </body>
+</html>
