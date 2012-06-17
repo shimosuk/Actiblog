@@ -17,81 +17,159 @@
 
       <section>
         <h2>お知らせページの追加</h2>
-コントローラの追加
-infomations_controller.rbを作る
-<div class="code">
+        <p>入力のない静的なページを追加する</p>
+        <h3>お知らせページを作成</h3>
+        <p>
+        コントローラを作成しinformationページの追加準備</br>
+        infomations_controller.rbを作成</br>
+        </p>
+        <div class="code">
+          <p>app/controllers/infomations_controller.rb</p>
+          <pre>
+<code>
 class InformationsController < ApplicationController
-</div>
-を記述
+  def index
+  end
+end
+</code>
+          </pre>
+        </div>
+        <p>処理のないindexメソッドは省略することが可能</p>
 
-app/views/informations/index.html.erb 
-<div class="code">
-view/infomations/index.html.erb
-</div>
+        <p>informationsが表示されるだけの静的ページを作成</p>
+        <div class="code">
+          <p>app/views/informations/index.html.erb </p>
+          <pre>
+<code>
+&lt;h1>informations&lt;/h1>
+</code>
+          </pre>
+        </div>
 
-<div class="code">
-&lth1>informations&lt/h1>
-</div>
+        <p>お知らせページのURLを設定</p>
+        <div class="code">
+          <p>config/routes.rb</p>
+          <pre>
+<code>
+Tickets::Application.routes.draw do
+  resources :tickets
+  <span># resources :informations # indexやshowなど不要なURLまで設定される</span>
+  <span># resources :informations, only: :index # 上記の中からindexのみを設定した</span>
+  <span>match '/informations', to: 'informations#index'</span>
+end
+</code>
+          </pre>
+        </div>
+        <p>
+        設定したURLは<span>rake routes</span>コマンドでルーティング出の設定が一覧できる</br>
+        実際にURLを叩いてinformations画面の確認</br>
+        </p>
 
-ルーティングの設定
-config/routes.rb</br>
 
-下記の3つどれか matchを使うならindexメソッドを書いたほうがいいかも</br>
-resources :informations</br>
-resources :informations, only: :index</br>
-match '/informations', to: 'informations#index'</br>
+        <h3>ticketsのindex画面にリンクを設定</h3>
 
-<p>raik routes</p>
-で現在のルーティングが一覧できる
-
-urlを叩いてinformations画面の確認
-
-index.html.erbにinfomationsリンクを作成
-
-<p><%= link_to 'Informations', informations_path %></p>
-を追加
+        <p>リンクは下記のコードをリンクを表示したいところに記入する</p>
+        <div class="code">
+          <p>app/views/tickets/index.html.erb</p>
+          <pre>
+<code>
+<%= link_to 'Informations', informations_path %>
+</code>
+          </pre>
+        </div>
       </section>
 
       <section>
-        <h2>テスト作成</h2>
-RSpecをつかう</br>
+        <h2>テスト実行の準備</h2>
+        <p>
+        テストにはRSpecをつかう</br>
+        Railsアプリケーションではアプリごとにbundleでの管理が必要となる</br>
+        まずはGemFileに下記を追加する</br>
+        </p>
+        <div class="code">
+          <p>Gemfile</p>
+          <pre>
+<code>
+group :test do
+gem 'rspec-rails'
+end
+</code>
+          </pre>
+        </div>
 
-GemFileに</br>
-group :test do</br>
-gem 'rspec-rails'</br>
-end</br>
-
-を記述</br>
-
-bundle install</br>
-(bundleだけでもいい)</br>
-
-rails generate rspec:install</br>
-
-を実行</br>
-RSpecの初期化</br>
-
-bundle exec rake db:migrate RAILS_ENV=test</br>
-テスト用のDB作成</br>
-bundle 以下のもののみを評価するようにするgemすべてのコマンドを使用しない</br>
-
-モデルのテストを書く</br>
-
-既存のテストを書く</br>
-バリデーションのテストを書いた</br>
-
+        <p>
+        上記記入後<span>bundle install</span>で必要なものを取得</br>
+        (実行にはbundleだけでもいいらしい)</br>
+        </p>
+        <p>
+        続いて、<span>rails generate rspec:install</span>でRSpecを初期化し、</br>
+        テスト用のDBを<span>bundle exec rake db:migrate RAILS_ENV=test</span>コマンドで作成</br>
+        <span>bundle exec</span>はbundle以下のコマンドのみを評価するようにする。gemすべてのコマンドを使用しない</br>
+        </p>
       </section>
 
       <section>
-        <h2>ticket カラムの追加</h2>
-      </section>
+        <h2>テストを作成</h2>
+        <p>
+        app/models/ticket.rbのテストを書く</br>
+        既存のテストを書く</br>
+        </p>
+        <div class="code">
+          <p>spec/models/ticket_spec.rb</p>
+          <pre>
+<code>
+#coding: utf-8
+require 'spec_helper'
 
-      <section>
-        <h2>ticket カラム名の変更</h2>
-      </section>
+describe Ticket do
 
-      <section>
-        <h2>お知らせページに入力フォーム作成</h2>
+  describe 'validation' do
+    before do
+      @ticket = Ticket.new(name: 'akiinyo', seat_id_seq: 'A-7', address: 'Tokyo', price_paid: '3000', email_address: 'akiinyo@example.com')
+    end
+
+    context '名前を入力した場合' do
+      before { @ticket.name = 'akiinyo' }
+      it { should be_valid }
+    end
+  end
+end
+</code>
+          </pre>
+        </div>
+        <p>
+        続いて、バリデーションのテストを書く</br>
+        </p>
+        <div class="code">
+          <p>spec/models/ticket_spec.rb</p>
+          <pre>
+<code>
+#coding: utf-8
+require 'spec_helper'
+
+describe Ticket do
+
+  describe 'validation' do
+    before do
+      @ticket = Ticket.new(name: 'akiinyo', seat_id_seq: 'A-7', address: 'Tokyo', price_paid: '3000', email_address: 'akiinyo@example.com')
+    end
+
+    subject { @ticket }
+<span>
+    context '名前が未入力の場合' do
+      before { @ticket.name = '' }
+      it { should_not be_valid }
+    end
+</span>
+    context '名前を入力した場合' do
+      before { @ticket.name = 'akiinyo' }
+      it { should be_valid }
+    end
+  end
+end
+</code>
+          </pre>
+        </div>
       </section>
   </body>
 </html>
