@@ -1,16 +1,34 @@
 .code {
-  background-color: #cccccc;
+  background-color: black;
   margin: 1em;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-left: 1em;
 }
+
+ul.code {
+  padding-left: 15px;
+}
+
 .code li {
   list-style: none;
+  color: #cccccc;
+}
+.code p {
+  background-color: #cccccc;
+  font-size: 12px;
+  margin: 0px;
+}
+pre {
+  margin-left: 10px;
+  color: #cccccc;
 }
 
 span {
   background: #cccccc;
   margin-right: 0.5em;
   margin-left: 0.5em;
+}
+
+code span {
+  color: #0E0;
+  background: none;
+  margin: 0px;
 }
