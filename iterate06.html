@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>第6回ActibuRuby勉強会</title>
+    <link href="style/contents.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <section>
+      <header>
+        <h1>第6回 Actibu Ruby勉強会</h1>
+        2012/07/19 講師：<a href="https://github.com/akiinyo">akiinyo</a><br>
+        書記：<a href="https://github.com/shimosuk">shimosuk</a>
+      </header>
+
+      <section>
+        <h2>phone_numberの登録ができるようにする</h2>
+        <p>前回まででカラムの追加などを行なっていたので、今回は画面から入力を行えるようにする。<br/>
+        下記を追加する。追加したら画面で入力欄ができていることを確認する</p>
+        <div class="code">
+          <p class="file">app/views/tickets/_form.html.erb</p>
+          <xmp>
+  <div class="field">
+    <%= f.label :phone_number %><br />
+    <%= f.text_field :phone_number %>
+  </div>
+          </xmp>
+        </div>
+        <h3>Q1.</h3>
+        <p><span>f.label</span>や<span>f.text_field</span>で使われている<span>f</span>ってなに?</p>
+        <h3>A1.</h3>
+        <p>同ファイル上部で宣言されている<span><%= form_for(@ticket) do |f| %></span>で定義されている f のこと</p>
+        <h3>Q2.</h3>
+        <p>変更しているのは、<span>_form.html.erb</span>なのに、なぜ実際にアプリで確認している画面は<span>new.html.erb</span>であったり<span>edit.html.erb</span>の画面なの?</p>
+        <h3>A2.</h3>
+        <p><span>new.html.erb</span>もしくは<span>edit.html.erb</span>を確認すると<span><%= render 'form' %></span>というのがある。<br/>
+        これで<span>_form.html.erb</span>を呼び出している。"_"がつくことで、renderで呼び出せるようになるというルールがある</p>
+      </section>
+
+      <section>
+        <h2>phone_numberの登録を必須にする</h2>
+        <p>名前の入力と同様に入力が必須となるような制約をかける<br/>
+        まずはテストの作成。名前のバリデーションを参考に書く</p>
+        <div class="code">
+          <p class="file">spec/models/ticket_spec.rb</p>
+          <pre>
+<code>
+     context '電話番号が未入力の場合' do
+       before { @ticket.phone_number = '' }
+       it { should_not be_valid }
+     end
+
+     context '電話番号が適切な場合' do
+       before { @ticket.phone_number = '08012345678' }
+       it { should be_valid }
+     end
+</code>
+          </pre>
+        </div>
+        <p><span>bundle exec rspec spec/</span>テストを実行して落ちることを確認<br/>
+        続いて実装。バリデーションを追加する。</p>
+        <div class="code">
+          <p class="file">app/models/ticket.rb</p>
+          <pre>
+<code>
+class Ticket < ActiveRecord::Base
+  attr_accessible :address, :email_address, :name, :price_paid, :seat_id_seq , :phone_number
+  validates :name, presence: true
+  <span>validates :phone_number, presence: true</span>
+end
+</code>
+          </pre>
+        </div>
+        <p>テストが通ることを確認</p>
+      </section>
+
+      <section>
+        <h2>phone_numberのバリデーションの強化</h2>
+        <p>入力を10桁以上11桁以下の入力に限定するように制約を変更する<br/>
+        下記のテストを追加<br/>
+        try:テストが通るように制約のかけ方を自分で調べてみる</p>
+        <div class="code">
+          <p class="file">spec/models/ticket_spec.rb</p>
+          <pre>
+<code>
+     <span>context '電話番号が短すぎる場合' do
+       before { @ticket.phone_number = '012345678' }
+       it { should_not be_valid }
+     end</span>
+
+     <span>context '電話番号が長すぎる場合' do
+       before { @ticket.phone_number = '012345678901' }
+       it { should_not be_valid }
+     end</span>
+
+     context '電話番号が適切な場合' do
+       before { @ticket.phone_number = '08012345678' }
+       it { should be_valid }
+     end
+</code>
+          </pre>
+        </div>
+        <p>いくつか方法があるので、上記のテストが通れば基本的にはOK<br/>
+        下記に実装例を上げる</p>
+        <div class="code">
+          <p class="file">app/models/ticket.rb</p>
+          <pre>
+<code>
+class Ticket < ActiveRecord::Base
+  attr_accessible :address, :email_address, :name, :price_paid, :seat_id_seq , :phone_number
+  validates :name, presence: true
+  <span>validates :phone_number, length: { minimum: 10, maximun: 11 }</span>
+end
+</code>
+          </pre>
+        </div>
+
+      </section>
+  </body>
+</html>

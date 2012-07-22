@@ -16,7 +16,7 @@ ul.code {
   font-size: 12px;
   margin: 0px;
 }
-pre {
+pre, xmp {
   margin-left: 10px;
   color: #cccccc;
 }
